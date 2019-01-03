@@ -2,18 +2,18 @@
 session_start();
 
 // Constante com a quantidade de tentativas aceitas
-define('TENTATIVAS_ACEITAS', 5); 
+define('TENTATIVAS_ACEITAS', 50); 
 
 // Constante com a quantidade minutos para bloqueio
-define('MINUTOS_BLOQUEIO', 30); 
+define('MINUTOS_BLOQUEIO', 300); 
 
 // Require da classe de conexão
 require 'conexao.php';
 
 
 // Dica 1 - Verifica se a origem da requisição é do mesmo domínio da aplicação
-if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != "http://localhost/login/index.php"):
-	$retorno = array('codigo' => 0, 'mensagem' => 'Origem da requisição não autorizada!');
+if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != PAGINA):
+	$retorno = array('codigo' => "0", 'mensagem' => 'Origem da requisição não autorizada!');
 	echo json_encode($retorno);
 	exit();
 endif;
@@ -29,13 +29,13 @@ $senha = (isset($_POST['senha'])) ? $_POST['senha'] : '' ;
 
 // Dica 2 - Validações de preenchimento e-mail e senha se foi preenchido o e-mail
 if (empty($email)):
-	$retorno = array('codigo' => 0, 'mensagem' => 'Preencha seu e-mail!');
+	$retorno = array('codigo' => "0", 'mensagem' => 'Preencha seu e-mail!');
 	echo json_encode($retorno);
 	exit();
 endif;
 
 if (empty($senha)):
-	$retorno = array('codigo' => 0, 'mensagem' => 'Preencha sua senha!');
+	$retorno = array('codigo' => "0", 'mensagem' => 'Preencha sua senha!');
 	echo json_encode($retorno);
 	exit();
 endif;
@@ -43,7 +43,7 @@ endif;
 
 // Dica 3 - Verifica se o formato do e-mail é válido
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)):
-    $retorno = array('codigo' => 0, 'mensagem' => 'Formato de e-mail inválido!');
+    $retorno = array('codigo' => "0", 'mensagem' => 'Formato de e-mail inválido!');
 	echo json_encode($retorno);
 	exit();
 endif;
@@ -61,7 +61,7 @@ $retorno = $stm->fetch(PDO::FETCH_OBJ);
 
 if (!empty($retorno->tentativas) && intval($retorno->minutos) <= MINUTOS_BLOQUEIO):
 	$_SESSION['tentativas'] = 0;
-	$retorno = array('codigo' => 0, 'mensagem' => 'Você excedeu o limite de '.TENTATIVAS_ACEITAS.' tentativas, login bloqueado por '.MINUTOS_BLOQUEIO.' minutos!');
+	$retorno = array('codigo' => "0", 'mensagem' => 'Você excedeu o limite de '.TENTATIVAS_ACEITAS.' tentativas, login bloqueado por '.MINUTOS_BLOQUEIO.' minutos!');
 	echo json_encode($retorno);
 	exit();
 endif;
@@ -101,18 +101,18 @@ endif;
 
 
 // Se logado envia código 1, senão retorna mensagem de erro para o login
-if ($_SESSION['logado'] == 'SIM'):
-	$retorno = array('codigo' => 1, 'mensagem' => 'Logado com sucesso!');
+if ($_SESSION['logado'] == 'SIM'){
+	$retorno = array('codigo' => "1", 'mensagem' => 'Logado com sucesso!');
 	echo json_encode($retorno);
 	exit();
-else:
-	if ($_SESSION['tentativas'] == TENTATIVAS_ACEITAS):
-		$retorno = array('codigo' => 0, 'mensagem' => 'Você excedeu o limite de '.TENTATIVAS_ACEITAS.' tentativas, login bloqueado por '.MINUTOS_BLOQUEIO.' minutos!');
+}else{
+	if ($_SESSION['tentativas'] == TENTATIVAS_ACEITAS){
+		$retorno = array('codigo' => "0", 'mensagem' => 'Você excedeu o limite de '.TENTATIVAS_ACEITAS.' tentativas, login bloqueado por '.MINUTOS_BLOQUEIO.' minutos!');
 		echo json_encode($retorno);
 		exit();
-	else:
-		$retorno = array('codigo' => '0', 'mensagem' => 'Usuário não autorizado, você tem mais '. (TENTATIVAS_ACEITAS - $_SESSION['tentativas']) .' tentativa(s) antes do bloqueio!');
+	}else{
+		$retorno = array('codigo' => "0", 'mensagem' => 'Usuário não autorizado, você tem mais '. (TENTATIVAS_ACEITAS - $_SESSION['tentativas']) .' tentativa(s) antes do bloqueio!');
 		echo json_encode($retorno);
 		exit();
-	endif;
-endif;
+	};
+};

@@ -7,6 +7,7 @@
  define('CHARSET', 'utf8');  
  define('USER', 'root');  
  define('PASSWORD', 'andersom11');  
+ define('PAGINA', 'http://localhost:8090/login%20seguro/loginphp/index.php');
 
  class Conexao {  
 

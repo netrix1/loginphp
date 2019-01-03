@@ -2,7 +2,7 @@
 session_start();
 
 if(isset($_SESSION['logado']) &&  $_SESSION['logado'] == 'SIM'):
-	header("Location: home.php");
+    header("Location: home.php");
 endif;
 ?>
 
@@ -39,7 +39,7 @@ endif;
         <div id="loginbox" class="mainbox col-md-7 col-md-offset-3 col-sm-8 col-sm-offset-2 margin-top-md">                    
             <div class="panel panel-primary" >
                 <div class="panel-heading">
-                    <div class="panel-title">Login - DevWilliam</div>
+                    <div class="panel-title">Login - DevEverSOM SOM TESTANDO</div>
                 </div>     
 
                 <div class="panel-body padding-top-md" >
@@ -75,5 +75,17 @@ endif;
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
     <script src="js/custom.js"></script>   
+    <script type="text/javascript">
+        $(window).ajaxComplete(function () {console.log('Ajax Complete'); });
+$(window).ajaxError(function (data, textStatus, jqXHR) {console.log('Ajax Error');
+    console.log('data: ' + data);
+    console.log('textStatus: ' + textStatus);
+        console.log('jqXHR: ' + jqXHR); });
+
+        $(window).ajaxSend(function () {console.log('Ajax Send'); });
+$(window).ajaxStart(function () {console.log('Ajax Start'); });
+$(window).ajaxStop(function () {console.log('Ajax Stop'); });
+$(window).ajaxSuccess(function () {console.log('Ajax Success'); });
+    </script>
 </body>
 </html>
